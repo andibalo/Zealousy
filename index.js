@@ -17,90 +17,121 @@ app.listen(port, () => {
 //@Route    POST /users
 //@desc     create a user
 //@access
-app.post('/users', (req, res) => {
-
+app.post('/users', async (req, res) => {
     const user = new User(req.body)
 
-    user.save().then(() => {
-        res.send(user)
-    }).catch((e) => {
-        res.send(e)
-    })
+    try {
+
+        await user.save()
+
+        res.json(user)
+    } catch (error) {
+
+        res.status(400).send(error)
+    }
+
+
+
 })
 
 //@Route    GET /users
 //@desc     get all users
 //@access
-app.get('/users', (req, res) => {
+app.get('/users', async (req, res) => {
 
-    User.find({}).then(users => {
-        res.send(users)
-    }).catch(e => {
-        res.send(e)
-    })
+    try {
+
+        const users = await User.find({})
+
+        if (!users) {
+            return res.status(404).send('users not found')
+        }
+
+        res.status(200).json({ users })
+    } catch (error) {
+
+        res.status(500).send('server error')
+    }
+
 })
 
 //@Route    GET /users/:id
 //@desc     get a user by id
 //@access
-app.get('/users/:id', (req, res) => {
+app.get('/users/:id', async (req, res) => {
 
     const userId = req.params.id
 
-    User.findById(userId).then(user => {
+    try {
+        const user = await User.findById(userId)
 
         if (!user) {
-            return res.status(400).send('user not found')
+            return res.status(404).send('user not found')
         }
 
-        res.send(user)
-    }).catch(e => {
-        res.send(e)
-    })
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(500).send(error)
+    }
+
 })
 
 //@Route    POST /tasks
 //@desc     create a task
 //@access
-app.post('/tasks', (req, res) => {
+app.post('/tasks', async (req, res) => {
 
     const task = new Task(req.body)
 
-    task.save().then(() => {
-        res.send(req.body)
-    }).catch(e => {
-        res.send(e)
-    })
+    try {
+        await task.save()
+
+        res.json(task)
+    } catch (error) {
+        res.send(error)
+    }
+
 })
 
 //@Route    GET /tasks
 //@desc     get all tasks
 //@access
-app.get('/tasks', (req, res) => {
+app.get('/tasks', async (req, res) => {
 
-    Task.find({}).then(tasks => {
-        res.send(tasks)
-    }).catch(e => {
-        res.send(e)
-    })
+    try {
+
+        const tasks = await Task.find({})
+
+        if (!tasks) {
+            return res.status(404).send('tasks not found')
+        }
+
+        res.status(200).json(tasks)
+    } catch (error) {
+        res.status(500).send(error)
+    }
+
 })
 
 //@Route    GET /tasks/:id
 //@desc     get a task by id
 //@access
-app.get('/tasks/:id', (req, res) => {
+app.get('/tasks/:id', async (req, res) => {
 
     const userId = req.params.id
 
-    Task.findById(userId).then(task => {
+    try {
+
+        const task = Task.findById(userId)
 
         if (!task) {
-            return res.status(400).send('user not found')
+            return res.status(404).send('task not found')
         }
 
-        res.send(task)
-    }).catch(e => {
-        res.send(e)
-    })
+        res.status(200).json(task)
+    } catch (error) {
+        res.status(500).send(error)
+    }
+
 })
 
