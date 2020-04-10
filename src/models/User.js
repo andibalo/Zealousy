@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
+const bcrypt = require('bcryptjs')
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -11,6 +12,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
+        unique: true,
         lowercase: true,
         validate(value) {
             if (!validator.isEmail(value)) {
@@ -38,6 +40,24 @@ const UserSchema = new mongoose.Schema({
             }
         }
     }
+})
+
+//SCHEMA MIDDLEWARE
+//using the shcema we can use middleware functions that run before or after certain events like 'save'
+
+//QUERIES THAT BYPASS MIDDLEWARES
+//certain queries like findbyidandupdate will bypass the middleware fucntions
+UserSchema.pre('save', async function (next) {
+
+    const user = this //this refers to the document about to be saved
+
+    //isModified is a method from ongoose on the document which receives fields to check it is modified
+    if (user.isModified('password')) {
+
+        user.password = await bcrypt.hash(user.password, 8)
+    }
+
+    next()
 })
 
 module.exports = User = mongoose.model('Users', UserSchema)

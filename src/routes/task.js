@@ -87,13 +87,21 @@ router.patch('/:id', async (req, res) => {
     try {
         //new options obj returns the updated document and runValidators makes sure it is a valid update
         //if the value from user is empty runValidators will return an error
-        const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+        //const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
 
-        if (!updatedTask) {
+        const task = await Task.findById(req.params.id)
+
+        updates.forEach(update => {
+            task[update] = req.body[update]
+        })
+
+        await task.save()
+
+        if (!task) {
             return res.status(400).send('Task not found')
         }
 
-        res.status(200).json(updatedTask)
+        res.status(200).json(task)
     } catch (error) {
 
         res.status(400).send(error)

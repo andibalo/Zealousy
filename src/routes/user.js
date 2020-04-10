@@ -1,6 +1,6 @@
 const express = require('express')
 const router = new express.Router()
-
+const bcrypt = require('bcryptjs')
 const User = require('../models/User')
 
 
@@ -8,6 +8,7 @@ const User = require('../models/User')
 //@desc     create a user
 //@access
 router.post('/', async (req, res) => {
+
     const user = new User(req.body)
 
     try {
@@ -24,6 +25,34 @@ router.post('/', async (req, res) => {
 
 })
 
+
+//@Route    POST /api/users/login
+//@desc     login
+//@access
+
+router.post('/login', async (req, res) => {
+
+    const { email, password } = req.body
+
+    try {
+        const user = await User.findOne({ email })
+
+        if (!user) {
+            return res.status(400).send('Invalid Credetials')
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password)
+
+        if (!isMatch) {
+            return res.status(400).send('Invalid Credentials')
+        }
+
+        res.status(200).json(user)
+    } catch (error) {
+
+        return res.status(500).send('server error')
+    }
+})
 //@Route    GET /api/users
 //@desc     get all users
 //@access
@@ -95,13 +124,27 @@ router.patch('/:id', async (req, res) => {
     try {
         //new options obj returns the updated document and runValidators makes sure it is a valid update
         //if the value from user is empty runValidators will return an error
-        const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+        //const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
 
-        if (!updatedUser) {
+        //Refractored so schema middlewares will run
+        //get user document by id and update it by looping over it and setting the value from req.body
+        const user = await User.findById(req.params.id)
+
+
+
+        updates.forEach(update => {
+            //user is an obj so we can dynamically access the fields using []
+            user[update] = req.body[update]
+        })
+
+        //if the objid alrdy exists it will not create a new document
+        await user.save()
+
+        if (!user) {
             return res.status(400).send('User not found')
         }
 
-        res.status(200).json(updatedUser)
+        res.status(200).json(user)
     } catch (error) {
 
         res.status(400).send(error)
