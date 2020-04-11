@@ -49,6 +49,24 @@ const UserSchema = new mongoose.Schema({
     }]
 })
 
+
+//HIDING USER PRIVATE DATA
+//toJSON method modifies the returning object of the object it is called upon and is called after JSON.stringify is called
+//JSON.stringify is called evertime the server sends back to the client - res.send(). Hence we can modifi the obj as to not
+//show the email and password
+
+//res.send -> json.stringify -> toJSON - modify data here
+UserSchema.methods.toJSON = function () {
+    const user = this
+
+    //change the mongoose document into the a raw object
+    const userObject = user.toObject()
+
+    delete userObject.password
+    delete userObject.tokens
+
+    return userObject
+}
 //CUSTOM METHODS ON MODEL/MODEL INSTANCE - They are promises
 //METHODS =  MODEL INSTANCE
 UserSchema.methods.generateAuthToken = async function () {

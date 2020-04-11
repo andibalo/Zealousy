@@ -51,6 +51,7 @@ router.post('/login', async (req, res) => {
 
         const token = await user.generateAuthToken()
 
+
         res.status(200).json({ user, token })
     } catch (error) {
 
@@ -121,30 +122,30 @@ router.get('/me', auth, async (req, res) => {
 //@Route    GET /api/users/:id
 //@desc     get a user by id
 //@access
-router.get('/:id', async (req, res) => {
+// router.get('/:id', async (req, res) => {
 
-    const userId = req.params.id
+//     const userId = req.params.id
 
-    try {
-        const user = await User.findById(userId)
+//     try {
+//         const user = await User.findById(userId)
 
-        if (!user) {
-            return res.status(404).send('user not found')
-        }
+//         if (!user) {
+//             return res.status(404).send('user not found')
+//         }
 
-        res.status(200).json(user)
-    } catch (error) {
-        res.status(500).send(error)
-    }
+//         res.status(200).json(user)
+//     } catch (error) {
+//         res.status(500).send(error)
+//     }
 
-})
+// })
 
 
-//@Route    PATCH /api/users/:id
+//@Route    PATCH /api/users/me
 //@desc     update a user
 //@access
 
-router.patch('/:id', async (req, res) => {
+router.patch('/me', auth, async (req, res) => {
 
     //VALIDATING UPDATE FIELDS
     //We want to check if the fields user is trying to update is valid. Fields in the model created
@@ -172,43 +173,35 @@ router.patch('/:id', async (req, res) => {
 
         //Refractored so schema middlewares will run
         //get user document by id and update it by looping over it and setting the value from req.body
-        const user = await User.findById(req.params.id)
-
-
+        //const user = await User.findById(req.params.id)
 
         updates.forEach(update => {
             //user is an obj so we can dynamically access the fields using []
-            user[update] = req.body[update]
+            req.user[update] = req.body[update]
         })
 
         //if the objid alrdy exists it will not create a new document
-        await user.save()
+        await req.user.save()
 
-        if (!user) {
-            return res.status(400).send('User not found')
-        }
 
-        res.status(200).json(user)
+
+        res.status(200).json(req.user)
     } catch (error) {
 
         res.status(400).send(error)
     }
 })
 
-//@Route    DELETE /api/users/:id
-//@desc     delete a user
+//@Route    DELETE /api/users/me
+//@desc     delete current user
 //@access
 
-router.delete('/:id', async (req, res) => {
+router.delete('/me', auth, async (req, res) => {
 
     try {
-        const user = User.findByIdAndDelete(req.params.id)
+        await req.user.delete()
 
-        if (!user) {
-            return res.status(400).send('user not found')
-        }
-
-        res.status(200).json(user)
+        res.status(200).json(req.user)
     } catch (error) {
 
         res.status(400).send(error)
