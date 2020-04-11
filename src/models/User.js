@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -39,8 +40,30 @@ const UserSchema = new mongoose.Schema({
                 throw new Error('Age must be a postive number')
             }
         }
-    }
+    },
+    tokens: [{
+        token: {
+            type: String,
+            required: true
+        }
+    }]
 })
+
+//CUSTOM METHODS ON MODEL/MODEL INSTANCE - They are promises
+//METHODS =  MODEL INSTANCE
+UserSchema.methods.generateAuthToken = async function () {
+
+    const user = this //thsi referes to the document
+
+    const token = jwt.sign({ id: user._id.toString() }, 'secret')
+
+
+    user.tokens = [...user.tokens, { token }]
+
+    await user.save()
+
+    return token
+}
 
 //SCHEMA MIDDLEWARE
 //using the shcema we can use middleware functions that run before or after certain events like 'save'

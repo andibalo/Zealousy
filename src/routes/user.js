@@ -2,7 +2,7 @@ const express = require('express')
 const router = new express.Router()
 const bcrypt = require('bcryptjs')
 const User = require('../models/User')
-
+const auth = require('../middleware/auth')
 
 //@Route    POST /api/users
 //@desc     create a user
@@ -15,7 +15,9 @@ router.post('/', async (req, res) => {
 
         await user.save()
 
-        res.json(user)
+        const token = await user.generateAuthToken()
+
+        res.status(200).json({ user, token })
     } catch (error) {
 
         res.status(400).send(error)
@@ -47,28 +49,70 @@ router.post('/login', async (req, res) => {
             return res.status(400).send('Invalid Credentials')
         }
 
-        res.status(200).json(user)
+        const token = await user.generateAuthToken()
+
+        res.status(200).json({ user, token })
     } catch (error) {
 
         return res.status(500).send('server error')
     }
 })
-//@Route    GET /api/users
-//@desc     get all users
-//@access
-router.get('/', async (req, res) => {
+
+//@Route    GET /api/users/logout
+//@desc     logout
+//@access   Private
+
+router.get('/logout', auth, async (req, res) => {
 
     try {
 
-        const users = await User.find({})
 
-        if (!users) {
-            return res.status(404).send('users not found')
-        }
 
-        res.status(200).json({ users })
+        req.user.tokens = req.user.tokens.filter(token => {
+            return token.token != req.token
+        })
+
+        await req.user.save()
+
+        res.status(200).send('logout succesful')
     } catch (error) {
 
+        res.status(500).send(error)
+    }
+})
+
+
+//@Route    GET /api/users/logoutAll
+//@desc     logout all sessions
+//@access   Private
+
+router.get('/logoutAll', auth, async (req, res) => {
+
+    try {
+
+        req.user.tokens = []
+
+        await req.user.save()
+
+        res.status(200).send('logout all sessions succesful')
+    } catch (error) {
+
+        res.status(500).send(error)
+    }
+})
+
+
+//@Route    GET /api/users/me
+//@desc     get current user profile
+//@access   Private
+router.get('/me', auth, async (req, res) => {
+
+    try {
+
+        res.status(200).json(req.user)
+
+    } catch (error) {
+        console.log(error)
         res.status(500).send('server error')
     }
 
