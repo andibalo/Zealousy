@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const Task = require('./Task')
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -47,6 +48,23 @@ const UserSchema = new mongoose.Schema({
             required: true
         }
     }]
+}, {
+    timestamps: true
+})
+
+//VIRTUAL FIELDS
+//virtual fields are used to store something but it is not stored in the database/document. It just tells monggose what owns what
+//in this case what the tasks field in Userschema owns
+
+//USER-TASKS is a one-to-many relationship and it is better to use virtual field than storing it in the user docuement
+//because the task is stored in different collection therefore saving resources
+
+//local/foreign field tells us what we want to get when we call populate('tasks') on users
+//in this case get all tasks with a certain user ObjectId
+UserSchema.virtual('tasks', {
+    ref: 'Tasks',
+    localField: '_id', //the field thats refrenced in the other document
+    foreignField: 'owner' //the User document refernce field in the Tasks document
 })
 
 
@@ -97,6 +115,15 @@ UserSchema.pre('save', async function (next) {
 
         user.password = await bcrypt.hash(user.password, 8)
     }
+
+    next()
+})
+
+UserSchema.pre('remove', async function (next) {
+
+    const user = this
+
+    await Task.deleteMany({ owner: user._id })
 
     next()
 })

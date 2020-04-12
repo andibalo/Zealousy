@@ -1,10 +1,9 @@
 const express = require('express')
 const app = express()
-
+const Task = require('./src/models/Task')
+const User = require('./src/models/User')
 require('./src/db/mongoose')
 const port = process.env.PORT || 3000
-
-
 
 app.use(express.json())
 
@@ -17,6 +16,7 @@ app.use('/api/tasks', require('./src/routes/task'))
 app.listen(port, () => {
     console.log(`Server started on port ${port}`)
 })
+
 
 
 
