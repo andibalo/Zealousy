@@ -33,17 +33,49 @@ router.post('/', auth, async (req, res) => {
 //@Route    GET /api/tasks
 //@desc     get all tasks
 //@access
+//@Params   GET /api/tasks?completed=true
+//          GET /api/tasks?limit=10&skip=10
+//          GET /api/tasks?sortby=createdAt:desc
 router.get('/', auth, async (req, res) => {
 
+    //NOTE QUERY STRINGS ARE STRING
+
+    const match = {}
+    const sort = {}
+    //check if completed query string exists
+    if (req.query.completed) {
+        match.completed = req.query.completed === 'true' //if true it will return true boolean else false
+    }
+
+    if (req.query.sortBy) {
+        const parts = req.query.sortBy.split(":")
+
+        sort[parts[0]] = parts[1] === 'desc' ? -1 : 1
+    }
+
     try {
+        //MATCH
+        //we use match obj containing fields for search crtieria to sort data using populate
+        await req.user.populate({
+            path: 'tasks',
+            match,
+            options: {
+                limit: parseInt(req.query.limit),
+                skip: parseInt(req.query.skip),
+                sort
+            }
+        }).execPopulate()
 
-        const tasks = await Task.find({ owner: req.user._id })
+        //EXECPOPULATE
+        //it is used to execute population and return promise
+        //it is not needed if the query has alrdy returned a promois 
+        //example: Task.finbyId().populate() - this will execute populate automatically and return pormise
 
-        if (!tasks) {
+        if (!req.user.tasks) {
             return res.status(404).send('tasks not found')
         }
 
-        res.status(200).json(tasks)
+        res.status(200).json(req.user.tasks)
     } catch (error) {
         res.status(500).send(error)
     }
