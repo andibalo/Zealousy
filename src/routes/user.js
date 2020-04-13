@@ -1,8 +1,26 @@
 const express = require('express')
 const router = new express.Router()
 const bcrypt = require('bcryptjs')
+const multer = require('multer')
 const User = require('../models/User')
 const auth = require('../middleware/auth')
+const sharp = require('sharp')
+
+const upload = multer({
+    //dest: 'avatars', - By removing dest we can pass the bianry data of img to the route handler otherwise it will be saved in the fielsystem
+
+    limits: {
+        fileSize: 1000000
+    },
+    fileFilter(req, file, cb) {
+
+        if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+            return cb(new Error('File must be in jpg,jpeg or png'))
+        }
+
+        cb(undefined, true)
+    }
+})
 
 //@Route    POST /api/users
 //@desc     create a user
@@ -119,26 +137,6 @@ router.get('/me', auth, async (req, res) => {
 
 })
 
-//@Route    GET /api/users/:id
-//@desc     get a user by id
-//@access
-// router.get('/:id', async (req, res) => {
-
-//     const userId = req.params.id
-
-//     try {
-//         const user = await User.findById(userId)
-
-//         if (!user) {
-//             return res.status(404).send('user not found')
-//         }
-
-//         res.status(200).json(user)
-//     } catch (error) {
-//         res.status(500).send(error)
-//     }
-
-// })
 
 
 //@Route    PATCH /api/users/me
@@ -192,6 +190,7 @@ router.patch('/me', auth, async (req, res) => {
     }
 })
 
+
 //@Route    DELETE /api/users/me
 //@desc     delete current user
 //@access
@@ -207,5 +206,69 @@ router.delete('/me', auth, async (req, res) => {
         res.status(400).send(error)
     }
 })
+
+//@Route    GET /api/users/:id/avatar
+//@desc     serve up profile picture on url
+//@access
+
+router.delete('/:id/avatar', async (req, res) => {
+
+    try {
+        const user = await User.findById(req.params.id)
+
+        if (!user || !user.avatar) {
+            return res.status(400).send('User/avatar not found')
+        }
+
+        res.set('Content-Type', 'image/jpg')
+
+        res.status(200).send(user.avatar)
+    } catch (error) {
+
+        res.status(500).json({ error })
+    }
+
+})
+
+
+//@Route    DELETE /api/users/me/avatar
+//@desc     delete profile picture
+//@access
+
+router.delete('/me/avatar', auth, async (req, res) => {
+
+    req.user.avatar = undefined
+
+    await req.user.save()
+
+    return res.status(200).json(req.user)
+})
+
+
+//@Route    POST /api/users/me/avatar
+//@desc     upload profile picture
+//@access
+
+router.post('/me/avatar', auth, upload.single('avatar'), async (req, res) => {
+
+    //req.user.avatar = req.file.buffer
+
+    const buffer = await sharp(req.file.buffer).resize({ width: 250, height: 250 }).png().toBuffer()
+
+    req.user.avatar = buffer
+
+    await req.user.save()
+
+    res.status(200).json(req.user)
+
+}, (error, req, res, next) => {
+
+    res.status(400).send({ error: error.message })
+})
+
+//CUSTOM ERROR HANDLERS
+//if the multer middleware throws error it will return a html.
+//in order for it to return a json we put a callback funtion that handles error AFTER route handler
+//the callback func MUST have (error, req, res, next) as argument so express knows it is a func that handles error
 
 module.exports = router
