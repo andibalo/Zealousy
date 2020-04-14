@@ -95,7 +95,7 @@ UserSchema.methods.generateAuthToken = async function () {
 
     const user = this //thsi referes to the document
 
-    const token = jwt.sign({ id: user._id.toString() }, 'secret')
+    const token = jwt.sign({ id: user._id.toString() }, process.env.JWT_SECRET)
 
 
     user.tokens = [...user.tokens, { token }]

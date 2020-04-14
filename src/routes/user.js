@@ -5,6 +5,7 @@ const multer = require('multer')
 const User = require('../models/User')
 const auth = require('../middleware/auth')
 const sharp = require('sharp')
+const { sendWelcomeMessage, sendCancellationMessage } = require('../emails/account')
 
 const upload = multer({
     //dest: 'avatars', - By removing dest we can pass the bianry data of img to the route handler otherwise it will be saved in the fielsystem
@@ -32,6 +33,8 @@ router.post('/', async (req, res) => {
     try {
 
         await user.save()
+
+        sendWelcomeMessage(user.name, user.email)
 
         const token = await user.generateAuthToken()
 
@@ -198,6 +201,9 @@ router.patch('/me', auth, async (req, res) => {
 router.delete('/me', auth, async (req, res) => {
 
     try {
+
+        sendCancellationMessage(req.user.name, req.user.email)
+
         await req.user.delete()
 
         res.status(200).json(req.user)

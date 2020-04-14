@@ -15,7 +15,7 @@ const auth = async (req, res, next) => {
         //in the auth midddleware we decode the user id from token and query the database to find the user data using the
         //decoded id and the token. Then we store the user data inside req obj
 
-        const decoded = jwt.verify(token, 'secret')
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
         const user = await User.findOne({ _id: decoded.id, 'tokens.token': token })
 
