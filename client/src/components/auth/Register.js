@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { register } from '../../actions/auth'
 import { connect } from 'react-redux'
-import { setAlert } from '../../actions/alert'
+import { setAlert, removeAlert } from '../../actions/alert'
 //MATERIAL UI
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -69,6 +69,20 @@ const Register = ({ register, setAlert }) => {
 
         e.preventDefault()
 
+        var isEmpty = false
+
+        for (var key in formData) {
+
+            if (formData[key] === '') {
+                isEmpty = true
+            }
+        }
+
+        if (isEmpty) {
+            setAlert('warning', 'Please fill out the required fields')
+
+            return
+        }
 
         if (password !== password2) {
             setAlert("warning", "Passwords do not match")
@@ -99,7 +113,7 @@ const Register = ({ register, setAlert }) => {
                                 fullWidth
                                 id="firstName"
                                 label="Username"
-                                autoFocus
+
                             />
                         </Grid>
 
