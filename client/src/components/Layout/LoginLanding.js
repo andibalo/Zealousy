@@ -50,7 +50,7 @@ const LoginLanding = () => {
                         <Login />
                     </Grid>
                     <Grid item xs={12} md={8}>
-                        <div style={{ maxWidth: "600px" }} className={classes.description}>
+                        <div style={{ textAlign: "right" }} className={classes.description}>
                             <Typography variant="h1" className="header" style={{ color: "#ffe9a3", fontWeight: 500 }}>
                                 Zealousy
                             </Typography>

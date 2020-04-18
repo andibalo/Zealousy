@@ -1,5 +1,6 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { Link, Redirect } from 'react-router-dom'
 import { Grid, Typography, makeStyles, Button, Box, Container } from '@material-ui/core'
 import Register from '../auth/Register'
 
@@ -39,9 +40,13 @@ const useStyles = makeStyles((theme) => ({
 
 }))
 
-const RegisterLanding = () => {
+const RegisterLanding = ({ token }) => {
 
     const classes = useStyles()
+
+    if (token) {
+        return <Redirect to="/dashboard" />
+    }
 
     return (
         <Box className={classes.wrapper}>
@@ -77,4 +82,8 @@ const RegisterLanding = () => {
     )
 }
 
-export default RegisterLanding 
+
+const mapStateToProps = state => ({
+    token: state.auth.token
+})
+export default connect(mapStateToProps)(RegisterLanding) 

@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { register } from '../../actions/auth'
 import { connect } from 'react-redux'
 import { setAlert, removeAlert } from '../../actions/alert'
+import { Link, withRouter } from 'react-router-dom'
 //MATERIAL UI
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Typography from '@material-ui/core/Typography';
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const Register = ({ register, setAlert }) => {
+const Register = ({ register, setAlert, location }) => {
     const classes = useStyles();
 
     const [formData, setFormData] = useState({
@@ -90,7 +90,9 @@ const Register = ({ register, setAlert }) => {
             return console.log('error')
         }
 
-        register({ name, email, password })
+        register({ name, email, password }, location)
+
+
     }
     return (
         <Container component="main" maxWidth="xs">
@@ -169,7 +171,7 @@ const Register = ({ register, setAlert }) => {
                     <Grid container justify="center">
                         <Grid item>
                             Already have an account?{' '}
-                            <Link href="#" variant="body2" className={classes.links}>
+                            <Link to="/login" className={classes.links}>
                                 Sign in
                             </Link>
                         </Grid>
@@ -181,4 +183,4 @@ const Register = ({ register, setAlert }) => {
     );
 }
 
-export default connect(null, { register, setAlert })(Register)
+export default connect(null, { register, setAlert })(withRouter(Register))
