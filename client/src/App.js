@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import store from './store'
 import Alerts from './components/Layout/Alerts';
 
-
+import { BrowserRouter as Router } from 'react-router-dom'
 
 const App = () => {
 
@@ -14,8 +14,10 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      <Alerts />
-      <Landing />
+      <Router>
+        <Alerts />
+        <Landing />
+      </Router>
     </Provider>
   );
 }

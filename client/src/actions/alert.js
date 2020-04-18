@@ -1,7 +1,7 @@
-import { SET_ALERT, REMOVE_ALERT } from './Types'
+import { SET_ALERT, REMOVE_ALERT, FADE_OUT } from './Types'
 import { v4 as uuidv4 } from 'uuid';
 
-export const setAlert = (type, msg) => dispatch => {
+export const setAlert = (type, msg, fadeIn = true) => dispatch => {
 
     const id = uuidv4()
 
@@ -10,14 +10,28 @@ export const setAlert = (type, msg) => dispatch => {
         payload: {
             id,
             type,
-            msg
+            msg,
+            fadeIn
         }
     })
 
-    setTimeout(() => dispatch({
-        type: REMOVE_ALERT,
-        payload: id
-    }), 3000)
+    setTimeout(() => {
+
+        dispatch({
+            type: FADE_OUT,
+            payload: id
+        })
+
+    }, 3000)
+
+    setTimeout(() => {
+
+        dispatch({
+            type: REMOVE_ALERT,
+            payload: id
+        })
+
+    }, 3500)
 }
 
 export const removeAlert = (id) => dispatch => {

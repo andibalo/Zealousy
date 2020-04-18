@@ -17,13 +17,16 @@ const useStyles = makeStyles((theme) => ({
     alert: {
         marginTop: theme.spacing(2),
         position: "relative",
-
+        '&[opacity=0]': {
+            display: "none"
+        }
     }
 }))
 
 const Alerts = ({ alerts, removeAlert }) => {
 
     const classes = useStyles()
+
 
     if (alerts.length > 3) {
 
@@ -34,8 +37,8 @@ const Alerts = ({ alerts, removeAlert }) => {
         <div className={classes.root}>
             {alerts !== null && alerts.length > 0 && alerts.map((alert, index) => (
 
-                <Fade key={index} in={true}>
-                    <Alert className={classes.alert} key={alert.id} severity={alert.type}>{alert.msg}</Alert>
+                <Fade key={index} in={alert.fadeIn}>
+                    <Alert className={classes.alert} key={alert.id} severity={alert.type} >{alert.msg}</Alert>
                 </Fade>
             ))}
         </div>

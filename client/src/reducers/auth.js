@@ -13,6 +13,7 @@ export default function (state = initialState, action) {
     const { payload, type } = action
 
     switch (type) {
+        case LOGIN:
         case REGISTER:
             return {
                 ...state,
