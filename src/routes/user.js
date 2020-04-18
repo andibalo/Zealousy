@@ -23,6 +23,29 @@ const upload = multer({
     }
 })
 
+//@Route    GET /api/users/:id/avatar
+//@desc     get user picture profile
+//@access
+
+router.get('/:id/avatar', async (req, res) => {
+
+    try {
+
+        const user = await User.findById(req.params.id)
+
+        if (!user || !user.avatar) {
+            return res.status(400).json({ error: "user not found" })
+        }
+
+        res.set('Content-Type', 'image/jpg')
+
+        res.send(user.avatar)
+    } catch (error) {
+
+        return res.status(400).json({ error })
+    }
+})
+
 //@Route    POST /api/users
 //@desc     create a user
 //@access
