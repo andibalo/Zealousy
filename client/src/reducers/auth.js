@@ -31,6 +31,7 @@ export default function (state = initialState, action) {
                 user: payload
             }
         case AUTH_ERROR:
+            localStorage.removeItem('token')
             return {
                 ...state,
                 token: null,

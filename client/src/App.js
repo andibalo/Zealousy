@@ -1,8 +1,8 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import Dashboard from './components/Dashboard/Dashboard'
 import LoginLanding from './components/Layout/LoginLanding'
 import RegisterLanding from './components/Layout/RegisterLanding'
-import { loadUser } from './actions/auth'
+import PrivateRoute from './components/PrivateRoute/PrivateRoute'
 
 //REDUX
 import { Provider } from 'react-redux'
@@ -23,7 +23,7 @@ const App = () => {
           <Route exact path="/" component={RegisterLanding} />
           <Switch>
             <Route exact path="/login" component={LoginLanding} />
-            <Route exact path="/dashboard" component={Dashboard} />
+            <PrivateRoute exact path="/dashboard" component={Dashboard} />
           </Switch>
         </Fragment>
       </Router>

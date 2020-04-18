@@ -26,6 +26,9 @@ import Avatar from '@material-ui/core/Avatar'
 import MainListItems from './listItems';
 import Backdrop from '@material-ui/core/Backdrop'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import Fab from '@material-ui/core/Fab'
+import AddIcon from '@material-ui/icons/Add';
+import Tooltip from '@material-ui/core/Tooltip';
 
 function Copyright() {
     return (
@@ -133,6 +136,12 @@ const useStyles = makeStyles((theme) => ({
     backdrop: {
         zIndex: theme.zIndex.drawer + 1,
         color: '#fff'
+    },
+    addIcon: {
+        backgroundColor: "#ff971d",
+        position: "absolute",
+        bottom: theme.spacing(6),
+        right: theme.spacing(6)
     }
 }));
 
@@ -142,10 +151,6 @@ const Dashboard = ({ auth: { loading, user }, loadUser }) => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
     const [hide, setHide] = React.useState(false)
-
-
-
-
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -189,7 +194,7 @@ const Dashboard = ({ auth: { loading, user }, loadUser }) => {
                         </IconButton>
                         <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
                             Zealousy
-                    </Typography>
+                        </Typography>
                         <IconButton color="inherit">
                             <Badge badgeContent={4} color="secondary">
                                 <NotificationsIcon />
@@ -233,6 +238,11 @@ const Dashboard = ({ auth: { loading, user }, loadUser }) => {
                     </List>
                 </Drawer>
                 <main className={classes.content}>
+                    <Tooltip title="Create a task" placement="left">
+                        <Fab size="large" className={classes.addIcon}>
+                            <AddIcon style={{ color: "white" }} />
+                        </Fab>
+                    </Tooltip>
                     <div className={classes.appBarSpacer} />
                     <Container maxWidth="lg" className={classes.container}>
                         <Grid container spacing={3}>
