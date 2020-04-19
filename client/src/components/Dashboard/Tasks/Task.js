@@ -11,7 +11,7 @@ const Task = ({ task: { loading, tasks, task } }) => {
         <div>
             <Grid container spacing={2} >
                 {tasks.map(task => (
-                    <TaskItem completed={task.completed} description={task.description} created={task.createdAt} />
+                    <TaskItem key={task._id} task={task} />
                 ))}
             </Grid>
         </div>

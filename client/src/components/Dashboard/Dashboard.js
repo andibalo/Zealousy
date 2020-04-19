@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { loadUser, logout } from '../../actions/auth'
 import { loadTasks, addTask } from '../../actions/task'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import { Redirect, StaticRouter } from 'react-router-dom'
 import Task from './Tasks/Task'
 import LiveClock from './LiveClock'
 import TaskForm from './TaskForm'
@@ -139,7 +139,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const Dashboard = ({ auth: { isAuthenticated, loading, user }, loadUser, logout, loadTasks, addTask }) => {
+const Dashboard = ({ auth: { isAuthenticated, loading, user }, task, loadUser, logout, loadTasks, addTask }) => {
 
 
 
@@ -176,7 +176,7 @@ const Dashboard = ({ auth: { isAuthenticated, loading, user }, loadUser, logout,
     //     return <Redirect to="/login" />
     // }
 
-    return loading ? (
+    return loading && task.loading ? (
 
         <Backdrop className={classes.backdrop} open={true}>
             <CircularProgress color="inherit" />
@@ -293,5 +293,6 @@ const Dashboard = ({ auth: { isAuthenticated, loading, user }, loadUser, logout,
 
 const mapStateToProps = state => ({
     auth: state.auth,
+    task: state.task
 })
 export default connect(mapStateToProps, { loadUser, logout, loadTasks, addTask })(Dashboard)

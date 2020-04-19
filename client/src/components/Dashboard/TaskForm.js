@@ -46,6 +46,10 @@ const TaskForm = ({ addTask }) => {
         }
 
         addTask({ completed, description })
+
+        setFormData({
+            description: ''
+        })
     }
 
     return (
