@@ -1,19 +1,52 @@
-import React from 'react';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import PeopleIcon from '@material-ui/icons/People';
-import BarChartIcon from '@material-ui/icons/BarChart';
-import LayersIcon from '@material-ui/icons/Layers';
+import React from "react";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import AccountBoxIcon from "@material-ui/icons/AccountBox";
+import HelpIcon from "@material-ui/icons/Help";
+import CancelIcon from "@material-ui/icons/Cancel";
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
+import Link from "@material-ui/core/Link";
+import { makeStyles } from "@material-ui/core";
 
+function Copyright() {
+    return (
+        <React.Fragment>
+            <Typography variant="body2" color="textSecondary" align="center">
+                {"Copyright © "}
 
+                {new Date().getFullYear()}
+                {"."}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" align="center">
+                By{" "}
+                <Link color="inherit" href="https://github.com/andibalo213">
+                    Andi Usman Balo
+        </Link>
+            </Typography>
+        </React.Fragment>
+    );
+}
 
-const MainListItems = () => {
+const useStyles = makeStyles((theme) => ({
+    root: {
+        display: "flex",
+        flexDirection: "column",
+        height: "inherit",
+    },
+    copyright: {
+        marginTop: "auto",
+        paddingBottom: theme.spacing(4),
+    },
+}));
+
+const MainListItems = ({ hide }) => {
+    const classes = useStyles();
 
     return (
-        <div>
+        <div className={classes.root}>
             <ListItem button>
                 <ListItemIcon>
                     <DashboardIcon />
@@ -22,31 +55,29 @@ const MainListItems = () => {
             </ListItem>
             <ListItem button>
                 <ListItemIcon>
-                    <ShoppingCartIcon />
+                    <AccountBoxIcon />
                 </ListItemIcon>
-                <ListItemText primary="Orders" />
+                <ListItemText primary="Account Details" />
             </ListItem>
             <ListItem button>
                 <ListItemIcon>
-                    <PeopleIcon />
+                    <HelpIcon />
                 </ListItemIcon>
-                <ListItemText primary="Customers" />
+                <ListItemText primary="Customer Support" />
             </ListItem>
             <ListItem button>
                 <ListItemIcon>
-                    <BarChartIcon />
+                    <CancelIcon />
                 </ListItemIcon>
-                <ListItemText primary="Reports" />
+                <ListItemText primary="Delete Account" />
             </ListItem>
-            <ListItem button>
-                <ListItemIcon>
-                    <LayersIcon />
-                </ListItemIcon>
-                <ListItemText primary="Integrations" />
-            </ListItem>
+            {!hide && (
+                <Box className={classes.copyright}>
+                    <Copyright />
+                </Box>
+            )}
         </div>
-    )
+    );
 };
 
-export default MainListItems
-
+export default MainListItems;

@@ -1,4 +1,4 @@
-import { AUTH_ERROR, REGISTER, LOGIN, LOAD_USER } from "./Types";
+import { AUTH_ERROR, REGISTER, LOGIN, LOAD_USER, LOG_OUT } from "./Types";
 import axios from 'axios'
 
 
@@ -88,4 +88,20 @@ export const login = (formData) => async dispatch => {
             type: AUTH_ERROR
         })
     }
+}
+
+export const logout = () => async dispatch => {
+
+    try {
+        await axios.get('api/users/logout')
+
+        dispatch({
+            type: LOG_OUT
+        })
+    } catch (error) {
+        dispatch({
+            type: AUTH_ERROR
+        })
+    }
+
 }
