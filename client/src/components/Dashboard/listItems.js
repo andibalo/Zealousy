@@ -22,9 +22,9 @@ function Copyright() {
             </Typography>
             <Typography variant="body2" color="textSecondary" align="center">
                 By{" "}
-                <Link color="inherit" href="https://github.com/andibalo213">
+                <Link color="inherit" href="https://github.com/andibalo213" target="_blank">
                     Andi Usman Balo
-        </Link>
+                </Link>
             </Typography>
         </React.Fragment>
     );

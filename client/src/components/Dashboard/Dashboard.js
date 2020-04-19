@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import { loadUser, logout } from '../../actions/auth'
-import { loadTasks } from '../../actions/task'
+import { loadTasks, addTask } from '../../actions/task'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
+import Task from './Tasks/Task'
+import LiveClock from './LiveClock'
+import TaskForm from './TaskForm'
 
 //MATERIAL UI
 import { makeStyles } from '@material-ui/core/styles';
@@ -30,7 +33,6 @@ import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add';
 import Tooltip from '@material-ui/core/Tooltip';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-
 
 
 const drawerWidth = 240;
@@ -137,7 +139,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const Dashboard = ({ auth: { isAuthenticated, loading, user }, loadUser, logout, loadTasks }) => {
+const Dashboard = ({ auth: { isAuthenticated, loading, user }, loadUser, logout, loadTasks, addTask }) => {
 
 
 
@@ -223,7 +225,7 @@ const Dashboard = ({ auth: { isAuthenticated, loading, user }, loadUser, logout,
                         !hide && (
                             <React.Fragment>
                                 <div className={classes.profile}>
-                                    <Avatar className={classes.avatar}>
+                                    <Avatar src={`http://localhost:5000/api/users/${user._id}/avatar`} className={classes.avatar}>
                                     </Avatar>
                                     <Typography variant="h6">
                                         {user.name}
@@ -250,11 +252,11 @@ const Dashboard = ({ auth: { isAuthenticated, loading, user }, loadUser, logout,
                     <div className={classes.appBarSpacer} />
                     <Container maxWidth="lg" className={classes.container}>
                         <Grid container spacing={3}>
-                            {/* Chart */}
+                            {/* Live Clock */}
                             <Grid item xs={12} md={4} >
                                 <Paper className={fixedHeightPaper}>
-                                    test
-                            </Paper>
+                                    <LiveClock />
+                                </Paper>
                             </Grid>
                             {/* Recent Deposits */}
                             <Grid item xs={12} md={4} >
@@ -267,19 +269,21 @@ const Dashboard = ({ auth: { isAuthenticated, loading, user }, loadUser, logout,
                                     test
                             </Paper>
                             </Grid>
+
+                        </Grid>
+                        <Grid container spacing={3} alignItems="stretch">
                             {/* Recent Orders */}
                             <Grid item xs={8}>
-                                <Paper className={classes.paper}>
-                                    test
+                                <Paper className={classes.paper} style={{ height: "100%" }}>
+                                    <Task />
                                 </Paper>
                             </Grid>
-                            <Grid item xs={4}>
-                                <Paper className={classes.paper}>
-                                    test
+                            <Grid item xs={4}  >
+                                <Paper className={classes.paper} style={{ height: "100%" }}>
+                                    <TaskForm />
                                 </Paper>
                             </Grid>
                         </Grid>
-
                     </Container>
                 </main>
             </div>
@@ -290,4 +294,4 @@ const Dashboard = ({ auth: { isAuthenticated, loading, user }, loadUser, logout,
 const mapStateToProps = state => ({
     auth: state.auth,
 })
-export default connect(mapStateToProps, { loadUser, logout, loadTasks })(Dashboard)
+export default connect(mapStateToProps, { loadUser, logout, loadTasks, addTask })(Dashboard)
