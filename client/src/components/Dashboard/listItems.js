@@ -40,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
         marginTop: "auto",
         paddingBottom: theme.spacing(4),
     },
+    deleteItem: {
+        color: "#e53935"
+    }
 }));
 
 const MainListItems = ({ hide }) => {
@@ -66,10 +69,10 @@ const MainListItems = ({ hide }) => {
                 <ListItemText primary="Customer Support" />
             </ListItem>
             <ListItem button>
-                <ListItemIcon>
+                <ListItemIcon className={classes.deleteItem}>
                     <CancelIcon />
                 </ListItemIcon>
-                <ListItemText primary="Delete Account" />
+                <ListItemText primary="Delete Account" style={{ color: "#e53935" }} />
             </ListItem>
             {!hide && (
                 <Box className={classes.copyright}>

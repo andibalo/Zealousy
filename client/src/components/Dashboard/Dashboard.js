@@ -7,6 +7,7 @@ import { Redirect, StaticRouter } from 'react-router-dom'
 import Task from './Tasks/Task'
 import LiveClock from './LiveClock'
 import TaskForm from './TaskForm'
+import TaskCounter from './TaskCounter'
 
 //MATERIAL UI
 import { makeStyles } from '@material-ui/core/styles';
@@ -176,7 +177,7 @@ const Dashboard = ({ auth: { isAuthenticated, loading, user }, task, loadUser, l
     //     return <Redirect to="/login" />
     // }
 
-    return loading && task.loading ? (
+    return loading ? (
 
         <Backdrop className={classes.backdrop} open={true}>
             <CircularProgress color="inherit" />
@@ -261,8 +262,8 @@ const Dashboard = ({ auth: { isAuthenticated, loading, user }, task, loadUser, l
                             {/* Recent Deposits */}
                             <Grid item xs={12} md={4} >
                                 <Paper className={fixedHeightPaper}>
-                                    test
-                            </Paper>
+                                    <TaskCounter task={task} />
+                                </Paper>
                             </Grid>
                             <Grid item xs={12} md={4}>
                                 <Paper className={fixedHeightPaper}>
