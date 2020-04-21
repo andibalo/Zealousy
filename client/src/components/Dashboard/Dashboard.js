@@ -3,11 +3,12 @@ import clsx from 'clsx';
 import { loadUser, logout } from '../../actions/auth'
 import { loadTasks, addTask } from '../../actions/task'
 import { connect } from 'react-redux'
-import { Redirect, StaticRouter } from 'react-router-dom'
+import { Redirect, Route, Switch } from 'react-router-dom'
 import Task from './Tasks/Task'
 import LiveClock from './LiveClock'
 import TaskForm from './TaskForm'
 import TaskCounter from './TaskCounter'
+import ProgressBar from './Tasks/ProgressBar'
 
 //MATERIAL UI
 import { makeStyles } from '@material-ui/core/styles';
@@ -34,6 +35,7 @@ import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add';
 import Tooltip from '@material-ui/core/Tooltip';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import AccountDetail from './AccountDetail';
 
 
 const drawerWidth = 240;
@@ -245,11 +247,11 @@ const Dashboard = ({ auth: { isAuthenticated, loading, user }, task, loadUser, l
                     </List>
                 </Drawer>
                 <main className={classes.content}>
-                    <Tooltip title="Create a task" placement="left">
+                    {/* <Tooltip title="Create a task" placement="left">
                         <Fab size="large" className={classes.addIcon}>
                             <AddIcon style={{ color: "white" }} />
                         </Fab>
-                    </Tooltip>
+                    </Tooltip> */}
                     <div className={classes.appBarSpacer} />
                     <Container maxWidth="lg" className={classes.container}>
                         <Grid container spacing={3}>
@@ -259,16 +261,17 @@ const Dashboard = ({ auth: { isAuthenticated, loading, user }, task, loadUser, l
                                     <LiveClock />
                                 </Paper>
                             </Grid>
-                            {/* Recent Deposits */}
+                            {/* Task Counter */}
                             <Grid item xs={12} md={4} >
                                 <Paper className={fixedHeightPaper}>
                                     <TaskCounter task={task} />
                                 </Paper>
                             </Grid>
+                            {/* Progress Bar */}
                             <Grid item xs={12} md={4}>
                                 <Paper className={fixedHeightPaper}>
-                                    test
-                            </Paper>
+                                    <ProgressBar task={task} />
+                                </Paper>
                             </Grid>
 
                         </Grid>

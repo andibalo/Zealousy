@@ -24,6 +24,7 @@ const App = () => {
           <Switch>
             <Route exact path="/login" component={LoginLanding} />
             <PrivateRoute exact path="/dashboard" component={Dashboard} />
+
           </Switch>
         </Fragment>
       </Router>

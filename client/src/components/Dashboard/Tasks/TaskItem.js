@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { deleteTask, editTask } from '../../../actions/task'
+import Moment from 'react-moment'
 
 //MATERIAL UI
 import Grid from '@material-ui/core/Grid'
@@ -50,13 +51,16 @@ const useStyles = makeStyles((theme) => ({
             color: 'white'
         }
     },
+    taskDate: {
+        marginRight: theme.spacing(1)
+    }
 }))
 
 const TaskItem = ({ task, deleteTask, editTask }) => {
 
     const classes = useStyles()
 
-    const { completed, description, created, _id } = task
+    const { completed, description, createdAt, _id } = task
 
 
     const onClick = e => {
@@ -73,6 +77,9 @@ const TaskItem = ({ task, deleteTask, editTask }) => {
                     <Typography variant="h6" style={{ marginRight: "auto" }}>
                         {description}
                     </Typography>
+                    <Moment format="D MMM YY, HH:mm A" className={classes.taskDate}>
+                        {createdAt}
+                    </Moment>
                     <div>
                         <Tooltip title="Mark as Complete" arrow>
                             <IconButton className={classes.checkBtn} onClick={e => onClick(e)}>
@@ -97,9 +104,7 @@ const TaskItem = ({ task, deleteTask, editTask }) => {
 }
 
 TaskItem.propTypes = {
-    completed: PropTypes.bool.isRequired,
-    description: PropTypes.string.isRequired,
-    created: PropTypes.string.isRequired,
+    task: PropTypes.func.isRequired,
     deleteTask: PropTypes.func.isRequired,
     editTask: PropTypes.func.isRequired,
 }
