@@ -104,7 +104,7 @@ const TaskItem = ({ task, deleteTask, editTask }) => {
 }
 
 TaskItem.propTypes = {
-    task: PropTypes.func.isRequired,
+    task: PropTypes.object.isRequired,
     deleteTask: PropTypes.func.isRequired,
     editTask: PropTypes.func.isRequired,
 }

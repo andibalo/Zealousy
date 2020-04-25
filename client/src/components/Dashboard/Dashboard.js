@@ -172,7 +172,7 @@ const Dashboard = ({ auth: { isAuthenticated, loading, user }, task, loadUser, l
     useEffect(() => {
         loadUser()
         loadTasks()
-    }, [loadUser])
+    }, [loadUser, loadTasks])
 
     //@TODO Protect routes using the private route component
     // if (!isAuthenticated) {
@@ -277,7 +277,7 @@ const Dashboard = ({ auth: { isAuthenticated, loading, user }, task, loadUser, l
                         </Grid>
                         <Grid container spacing={3} alignItems="stretch">
                             {/* Recent Orders */}
-                            <Grid item xs={8}>
+                            <Grid item xs={8} style={{ height: "424px", overflow: "auto" }}>
                                 <Paper className={classes.paper} style={{ height: "100%" }}>
                                     <Task />
                                 </Paper>

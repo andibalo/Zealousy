@@ -1,4 +1,7 @@
 import React from "react";
+import { connect } from 'react-redux'
+import { deleteAccount } from '../../actions/auth'
+
 // import { Link } from 'react-router-dom'
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -11,6 +14,12 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button'
 
 function Copyright() {
     return (
@@ -46,8 +55,18 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const MainListItems = ({ hide }) => {
+const MainListItems = ({ hide, deleteAccount }) => {
     const classes = useStyles();
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     return (
         <div className={classes.root}>
@@ -71,7 +90,7 @@ const MainListItems = ({ hide }) => {
                 </ListItemIcon>
                 <ListItemText primary="Customer Support" />
             </ListItem>
-            <ListItem button>
+            <ListItem button onClick={e => handleOpen(e)} >
                 <ListItemIcon className={classes.deleteItem}>
                     <CancelIcon />
                 </ListItemIcon>
@@ -82,8 +101,30 @@ const MainListItems = ({ hide }) => {
                     <Copyright />
                 </Box>
             )}
+
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title" style={{ color: "#f50057" }}>Deleting Your Account</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Once your account is deleted, you will not be able to get it back. Do you still want to delete your account?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} >
+                        Cancel
+                    </Button>
+                    <Button onClick={e => deleteAccount()} color="secondary" autoFocus variant="contained">
+                        Delete
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 };
 
-export default MainListItems;
+export default connect(null, { deleteAccount })(MainListItems);

@@ -4,11 +4,24 @@ import { connect } from 'react-redux'
 import Grid from '@material-ui/core/Grid'
 import TaskItem from './TaskItem'
 import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@material-ui/core'
+
+const useStyles = makeStyles((theme) => ({
+    taskMsg: {
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center"
+    }
+}))
 
 const Task = ({ task: { loading, tasks, task } }) => {
 
+    const classes = useStyles()
+
     return !loading && tasks.length > 0 ? (
-        <div>
+        <div >
             <Grid container spacing={2} >
                 {tasks.map(task => (
                     <TaskItem key={task._id} task={task} />
@@ -16,7 +29,7 @@ const Task = ({ task: { loading, tasks, task } }) => {
             </Grid>
         </div>
     ) : (
-            <div>
+            <div className={classes.taskMsg}>
                 <Typography variant="h5" style={{ color: "#ff971d" }}>
                     Seems like you don't have any tasks yet...
                 </Typography>

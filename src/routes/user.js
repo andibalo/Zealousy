@@ -3,6 +3,7 @@ const router = new express.Router()
 const bcrypt = require('bcryptjs')
 const multer = require('multer')
 const User = require('../models/User')
+const Task = require('../models/Task')
 const auth = require('../middleware/auth')
 const sharp = require('sharp')
 const { sendWelcomeMessage, sendCancellationMessage } = require('../emails/account')
@@ -269,6 +270,8 @@ router.delete('/me/avatar', auth, async (req, res) => {
     req.user.avatar = undefined
 
     await req.user.save()
+
+    await Task.deleteMany({ owner: req.user._id })
 
     return res.status(200).json(req.user)
 })

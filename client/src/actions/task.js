@@ -1,11 +1,29 @@
 import { GET_TASKS, TASK_ERROR, ADD_TASK, DELETE_TASK, EDIT_TASK } from './Types'
 import axios from 'axios'
 
-export const loadTasks = () => async dispatch => {
+export const loadTasks = (filterValues = {}) => async dispatch => {
 
+
+    let route = '/api/tasks'
+
+    const { completed, sortBy } = filterValues
+
+    if (completed && sortBy) {
+
+        route += `?completed=${completed}&sortBy=${sortBy}`
+
+    } else {
+        let query = completed || sortBy
+
+        let key = query === completed ? "completed" : "sortBy"
+
+        route += `?${key}=${query}`
+    }
+
+    console.log(route)
     try {
 
-        const res = await axios.get('/api/tasks')
+        const res = await axios.get(route)
 
         dispatch({
             type: GET_TASKS,
@@ -21,6 +39,8 @@ export const loadTasks = () => async dispatch => {
         console.log(error)
     }
 }
+
+
 
 export const addTask = (formData) => async dispatch => {
 

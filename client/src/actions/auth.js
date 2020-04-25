@@ -1,4 +1,4 @@
-import { AUTH_ERROR, REGISTER, LOGIN, LOAD_USER, LOG_OUT } from "./Types";
+import { AUTH_ERROR, REGISTER, LOGIN, LOAD_USER, LOG_OUT, DELETE_ACCOUNT } from "./Types";
 import axios from 'axios'
 
 
@@ -104,4 +104,24 @@ export const logout = () => async dispatch => {
         })
     }
 
+}
+
+export const deleteAccount = () => async dispatch => {
+
+    try {
+
+        await axios.delete('/api/users/me')
+
+        dispatch({
+            type: DELETE_ACCOUNT
+        })
+
+    } catch (error) {
+
+        console.log(error)
+
+        dispatch({
+            type: AUTH_ERROR
+        })
+    }
 }

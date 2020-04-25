@@ -1,6 +1,7 @@
 export const LOGIN = "LOGIN"
 export const REGISTER = "REGISTER"
 export const LOG_OUT = "LOG_OUT"
+export const DELETE_ACCOUNT = "DELETE_ACCOUNT"
 export const LOAD_USER = "LOAD_USER"
 export const AUTH_ERROR = "AUTH_ERROR"
 export const SET_ALERT = "SET_ALERT"

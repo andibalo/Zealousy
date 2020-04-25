@@ -20,13 +20,18 @@ const ProgressBar = ({ task: { tasks } }) => {
     let totalTasks = 0
     let incompleteTasks = 0;
     let completeTasks = 0;
+    let percentage = 0;
 
-    tasks.forEach(task => {
-        task.completed ? ++completeTasks : ++incompleteTasks;
-        ++totalTasks;
-    })
+    if (tasks.length > 0) {
+        tasks.forEach(task => {
+            task.completed ? ++completeTasks : ++incompleteTasks;
+            ++totalTasks;
+        })
 
-    const percentage = Math.round((completeTasks / totalTasks) * 100)
+        percentage = Math.round((completeTasks / totalTasks) * 100)
+    }
+
+
 
 
 
