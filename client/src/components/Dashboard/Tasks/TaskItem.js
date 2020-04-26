@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
     },
     editBtn: {
         color: "rgba(251, 192, 45)",
+        marginRight: theme.spacing(1.5),
         '&:hover': {
             backgroundColor: "rgba(251, 192, 45, 0.7)",
             color: "white"
@@ -46,13 +47,22 @@ const useStyles = makeStyles((theme) => ({
     },
     checkBtn: {
         color: "rgba(0, 230, 118)",
+        marginRight: theme.spacing(1.5),
         '&:hover': {
             backgroundColor: "rgba(0, 230, 118, 0.7)",
             color: 'white'
         }
     },
+    checkedBtn: {
+        backgroundColor: "rgba(0, 230, 118, 0.7)",
+        color: 'white',
+        marginRight: theme.spacing(1.5),
+        '&:hover': {
+            backgroundColor: "rgba(0, 230, 118, 1)"
+        }
+    },
     taskDate: {
-        marginRight: theme.spacing(1)
+        marginRight: theme.spacing(1.5)
     }
 }))
 
@@ -81,8 +91,8 @@ const TaskItem = ({ task, deleteTask, editTask }) => {
                         {createdAt}
                     </Moment>
                     <div>
-                        <Tooltip title="Mark as Complete" arrow>
-                            <IconButton className={classes.checkBtn} onClick={e => onClick(e)}>
+                        <Tooltip title={!completed ? "Mark as Complete" : "Mark as Incomplete"} arrow>
+                            <IconButton className={!completed ? classes.checkBtn : classes.checkedBtn} onClick={e => onClick(e)}>
                                 <CheckIcon />
                             </IconButton>
                         </Tooltip>

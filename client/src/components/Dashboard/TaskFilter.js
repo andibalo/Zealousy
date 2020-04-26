@@ -50,15 +50,10 @@ const TaskFilter = ({ loadTasks }) => {
 
 
     const handleRadio = e => {
-
-        console.log(e.target.name, e.target.value)
-
         setFilterValues({
             ...filterValues,
             [e.target.name]: e.target.value
         })
-
-
     }
 
     return (

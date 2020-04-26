@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from 'react-redux'
 import { deleteAccount } from '../../actions/auth'
 
-// import { Link } from 'react-router-dom'
+
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -12,7 +12,7 @@ import HelpIcon from "@material-ui/icons/Help";
 import CancelIcon from "@material-ui/icons/Cancel";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
+import LinkMaterial from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core";
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -32,9 +32,9 @@ function Copyright() {
             </Typography>
             <Typography variant="body2" color="textSecondary" align="center">
                 By{" "}
-                <Link color="inherit" href="https://github.com/andibalo213" target="_blank">
+                <LinkMaterial color="inherit" href="https://github.com/andibalo213" target="_blank">
                     Andi Usman Balo
-                </Link>
+                </LinkMaterial>
             </Typography>
         </React.Fragment>
     );
@@ -52,6 +52,13 @@ const useStyles = makeStyles((theme) => ({
     },
     deleteItem: {
         color: "#e53935"
+    },
+    deleteBtn: {
+        backgroundColor: '#e53935',
+        color: "#fff",
+        '&:hover': {
+            backgroundColor: 'rgb(216, 64, 60)'
+        }
     }
 }));
 
@@ -84,6 +91,8 @@ const MainListItems = ({ hide, deleteAccount }) => {
                 <ListItemText primary="Account Details" />
             </ListItem>
 
+
+
             <ListItem button>
                 <ListItemIcon>
                     <HelpIcon />
@@ -108,7 +117,7 @@ const MainListItems = ({ hide, deleteAccount }) => {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title" style={{ color: "#f50057" }}>Deleting Your Account</DialogTitle>
+                <DialogTitle id="alert-dialog-title" style={{ color: "#e53935" }}>Deleting Your Account</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         Once your account is deleted, you will not be able to get it back. Do you still want to delete your account?
@@ -118,7 +127,7 @@ const MainListItems = ({ hide, deleteAccount }) => {
                     <Button onClick={handleClose} >
                         Cancel
                     </Button>
-                    <Button onClick={e => deleteAccount()} color="secondary" autoFocus variant="contained">
+                    <Button onClick={e => deleteAccount()} className={classes.deleteBtn} autoFocus variant="contained">
                         Delete
                     </Button>
                 </DialogActions>

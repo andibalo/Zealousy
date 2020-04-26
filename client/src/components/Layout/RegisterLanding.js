@@ -40,11 +40,11 @@ const useStyles = makeStyles((theme) => ({
 
 }))
 
-const RegisterLanding = ({ token }) => {
+const RegisterLanding = ({ isAuthenticated }) => {
 
     const classes = useStyles()
 
-    if (token) {
+    if (isAuthenticated) {
         return <Redirect to="/dashboard" />
     }
 
@@ -84,6 +84,6 @@ const RegisterLanding = ({ token }) => {
 
 
 const mapStateToProps = state => ({
-    token: state.auth.token
+    isAuthenticated: state.auth.isAuthenticated
 })
 export default connect(mapStateToProps)(RegisterLanding) 

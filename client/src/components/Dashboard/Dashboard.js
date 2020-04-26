@@ -9,7 +9,7 @@ import TaskForm from './TaskForm'
 import TaskCounter from './TaskCounter'
 import ProgressBar from './Tasks/ProgressBar'
 import UserAvatar from './UserAvatar'
-
+import { Redirect } from 'react-router-dom'
 //MATERIAL UI
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -27,7 +27,6 @@ import Paper from '@material-ui/core/Paper';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import Avatar from '@material-ui/core/Avatar'
 import MainListItems from './listItems';
 import Backdrop from '@material-ui/core/Backdrop'
 import CircularProgress from '@material-ui/core/CircularProgress'
@@ -140,8 +139,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = ({ auth: { isAuthenticated, loading, user }, task, loadUser, logout, loadTasks, addTask }) => {
 
-
-
     const classes = useStyles();
 
     const [open, setOpen] = React.useState(true);
@@ -170,112 +167,110 @@ const Dashboard = ({ auth: { isAuthenticated, loading, user }, task, loadUser, l
         loadTasks()
     }, [loadUser, loadTasks])
 
-    //@TODO Protect routes using the private route component
-    // if (!isAuthenticated) {
-    //     return <Redirect to="/login" />
-    // }
 
-    return loading ? (
 
-        <Backdrop className={classes.backdrop} open={true}>
-            <CircularProgress color="inherit" />
-        </Backdrop>
+    return !loading && user ? (
+        <div className={classes.root}>
+            <CssBaseline />
+            <AppBar position="absolute" style={{ backgroundColor: '#ff971d' }} className={clsx(classes.appBar, open && classes.appBarShift)}>
+                <Toolbar className={classes.toolbar}>
+                    <IconButton
+                        edge="start"
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={handleDrawerOpen}
+                        className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+                        Zealousy
+                    </Typography>
+                    <Typography variant="h6" color="inherit" noWrap style={{ marginRight: '12px' }}>
+                        Hi, {user.name}
+                    </Typography>
+
+                    <IconButton color="inherit" style={{ marginRight: '12px' }}>
+                        <Badge badgeContent={4} color="secondary">
+                            <NotificationsIcon />
+                        </Badge>
+                    </IconButton>
+                    <IconButton onClick={e => logout()}>
+                        <ExitToAppIcon style={{ color: "#fff" }} />
+                    </IconButton>
+                </Toolbar>
+            </AppBar>
+            <Drawer
+                variant="permanent"
+                classes={{
+                    paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+                }}
+                open={open}
+            >
+                <div className={classes.toolbarIcon}>
+                    <IconButton onClick={handleDrawerClose}>
+                        <ChevronLeftIcon />
+                    </IconButton>
+                </div>
+                <Divider />
+                {
+                    !hide && (
+                        <React.Fragment>
+                            <UserAvatar user={user} />
+                            <Divider />
+                        </React.Fragment>
+                    )
+                }
+
+                <List style={{ height: "100%" }}>
+                    <MainListItems hide={hide} />
+                </List>
+            </Drawer>
+            <main className={classes.content}>
+                <div className={classes.appBarSpacer} />
+                <Container maxWidth="lg" className={classes.container}>
+                    <Grid container spacing={3}>
+                        {/* Live Clock */}
+                        <Grid item xs={12} md={4} >
+                            <Paper className={fixedHeightPaper}>
+                                <LiveClock />
+                            </Paper>
+                        </Grid>
+                        {/* Task Counter */}
+                        <Grid item xs={12} md={4} >
+                            <Paper className={fixedHeightPaper}>
+                                <TaskCounter task={task} />
+                            </Paper>
+                        </Grid>
+                        {/* Progress Bar */}
+                        <Grid item xs={12} md={4}>
+                            <Paper className={fixedHeightPaper}>
+                                <ProgressBar task={task} />
+                            </Paper>
+                        </Grid>
+
+                    </Grid>
+                    <Grid container spacing={3} alignItems="stretch">
+                        {/* Task */}
+                        <Grid item xs={8} style={{ height: "424px", overflow: "auto" }}>
+                            <Paper className={classes.paper} style={{ height: "100%" }}>
+                                <Task />
+                            </Paper>
+                        </Grid>
+                        <Grid item xs={4}  >
+                            <Paper className={classes.paper} style={{ height: "100%" }}>
+                                <TaskForm />
+                            </Paper>
+                        </Grid>
+                    </Grid>
+                </Container>
+            </main>
+        </div>
+
     ) : (
-            <div className={classes.root}>
-                <CssBaseline />
-                <AppBar position="absolute" style={{ backgroundColor: '#ff971d' }} className={clsx(classes.appBar, open && classes.appBarShift)}>
-                    <Toolbar className={classes.toolbar}>
-                        <IconButton
-                            edge="start"
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={handleDrawerOpen}
-                            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                            Zealousy
-                        </Typography>
-                        <Typography variant="h6" color="inherit" noWrap >
-                            Hi, {user.name.split(' ')[0]}
-                        </Typography>
-                        <IconButton color="inherit">
-                            <Badge badgeContent={4} color="secondary">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
-                        <IconButton onClick={e => logout()}>
-                            <ExitToAppIcon style={{ color: "#fff" }} />
-                        </IconButton>
-                    </Toolbar>
-                </AppBar>
-                <Drawer
-                    variant="permanent"
-                    classes={{
-                        paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-                    }}
-                    open={open}
-                >
-                    <div className={classes.toolbarIcon}>
-                        <IconButton onClick={handleDrawerClose}>
-                            <ChevronLeftIcon />
-                        </IconButton>
-                    </div>
-                    <Divider />
-                    {
-                        !hide && (
-                            <React.Fragment>
-                                <UserAvatar user={user} />
-                                <Divider />
-                            </React.Fragment>
-                        )
-                    }
-
-                    <List style={{ height: "100%" }}>
-                        <MainListItems hide={hide} />
-                    </List>
-                </Drawer>
-                <main className={classes.content}>
-                    <div className={classes.appBarSpacer} />
-                    <Container maxWidth="lg" className={classes.container}>
-                        <Grid container spacing={3}>
-                            {/* Live Clock */}
-                            <Grid item xs={12} md={4} >
-                                <Paper className={fixedHeightPaper}>
-                                    <LiveClock />
-                                </Paper>
-                            </Grid>
-                            {/* Task Counter */}
-                            <Grid item xs={12} md={4} >
-                                <Paper className={fixedHeightPaper}>
-                                    <TaskCounter task={task} />
-                                </Paper>
-                            </Grid>
-                            {/* Progress Bar */}
-                            <Grid item xs={12} md={4}>
-                                <Paper className={fixedHeightPaper}>
-                                    <ProgressBar task={task} />
-                                </Paper>
-                            </Grid>
-
-                        </Grid>
-                        <Grid container spacing={3} alignItems="stretch">
-                            {/* Task */}
-                            <Grid item xs={8} style={{ height: "424px", overflow: "auto" }}>
-                                <Paper className={classes.paper} style={{ height: "100%" }}>
-                                    <Task />
-                                </Paper>
-                            </Grid>
-                            <Grid item xs={4}  >
-                                <Paper className={classes.paper} style={{ height: "100%" }}>
-                                    <TaskForm />
-                                </Paper>
-                            </Grid>
-                        </Grid>
-                    </Container>
-                </main>
-            </div>
+            <Backdrop className={classes.backdrop} open={true}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
         );
 }
 

@@ -95,7 +95,7 @@ const UserAvatar = ({ user, uploadImage }) => {
         const timestamp = Date.now();
         setAvatar('')
         setAvatar(`http://localhost:5000/api/users/${user._id}/avatar?t=${timestamp}`)
-    }, [user.avatar])
+    }, [user.avatar, user._id])
 
     const handleOpen = () => {
         setOpen(true);
@@ -165,9 +165,10 @@ const UserAvatar = ({ user, uploadImage }) => {
                     <form onSubmit={e => onSubmit(e)} >
                         <div className={classes.fileInputWrapper}>
                             <input type="file" onChange={e => onUpload(e)} className={classes.fileInput} />
-                            <Typography variant="caption">
+                            <Typography variant="caption" >
                                 Recommended Image Size: 250x250
                             </Typography>
+
                         </div>
 
                         <Button type="submit" color="primary" autoFocus variant="contained" startIcon={<PublishIcon />} style={{ width: "100%", backgroundColor: 'rgb(255, 151, 29)' }}>

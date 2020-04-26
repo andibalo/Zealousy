@@ -74,6 +74,7 @@ const ProgressBar = ({ task: { tasks } }) => {
                         fill: '#ff971d',
                         // Text size
                         fontSize: '16px',
+                        fontWeight: "600"
                     },
                     // Customize background - only used when the `background` prop is true
                     background: {

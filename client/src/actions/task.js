@@ -20,7 +20,7 @@ export const loadTasks = (filterValues = {}) => async dispatch => {
         route += `?${key}=${query}`
     }
 
-    console.log(route)
+
     try {
 
         const res = await axios.get(route)
@@ -36,7 +36,7 @@ export const loadTasks = (filterValues = {}) => async dispatch => {
             type: TASK_ERROR,
             payload: error.msg
         })
-        console.log(error)
+
     }
 }
 

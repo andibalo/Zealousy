@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: "500"
     },
     headerSecondary: {
-        color: "#ff971d"
+        color: "rgb(158, 158, 158)"
     },
     subHeader: {
         fontWeight: "500"

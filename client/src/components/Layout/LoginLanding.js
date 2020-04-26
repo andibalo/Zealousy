@@ -1,4 +1,7 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
+
 import { Link } from 'react-router-dom'
 import { Grid, Typography, makeStyles, Button, Box, Container } from '@material-ui/core'
 import Login from '../auth/Login'
@@ -38,9 +41,12 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-const LoginLanding = () => {
+const LoginLanding = ({ isAuthenticated }) => {
     const classes = useStyles()
 
+    if (isAuthenticated) {
+        return <Redirect to="/dashboard" />
+    }
 
     return (
         <Box className={classes.wrapper}>
@@ -75,4 +81,8 @@ const LoginLanding = () => {
     )
 }
 
-export default LoginLanding
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated
+})
+
+export default connect(mapStateToProps)(LoginLanding)
