@@ -1,4 +1,4 @@
-import { AUTH_ERROR, LOGIN, REGISTER, LOAD_USER, LOG_OUT, DELETE_ACCOUNT } from '../actions/Types'
+import { AUTH_ERROR, LOGIN, REGISTER, LOAD_USER, LOG_OUT, DELETE_ACCOUNT, UPLOAD_IMAGE } from '../actions/Types'
 
 const initialState = {
     token: localStorage.getItem('token'),
@@ -13,6 +13,7 @@ export default function (state = initialState, action) {
     const { payload, type } = action
 
     switch (type) {
+        case UPLOAD_IMAGE:
         case LOAD_USER:
             return {
                 ...state,

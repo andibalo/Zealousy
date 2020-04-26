@@ -10,7 +10,6 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
 import { makeStyles } from '@material-ui/core'
 
 
@@ -47,8 +46,7 @@ const TaskFilter = ({ loadTasks }) => {
     //We use useEffect to changes in filterValues and dispatch action. Similar to waiting to be updated then dispatch action
     useEffect(() => {
         loadTasks(filterValues)
-        console.log(filterValues)
-    }, [filterValues])
+    }, [filterValues, loadTasks])
 
 
     const handleRadio = e => {

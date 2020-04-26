@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import { CircularProgressbar, buildStyles, CircularProgressbarWithChildren } from "react-circular-progressbar";
+import { CircularProgressbarWithChildren } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
 //MATERIAL UI

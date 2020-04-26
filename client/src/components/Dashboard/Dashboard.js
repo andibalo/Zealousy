@@ -3,12 +3,12 @@ import clsx from 'clsx';
 import { loadUser, logout } from '../../actions/auth'
 import { loadTasks, addTask } from '../../actions/task'
 import { connect } from 'react-redux'
-import { Redirect, Route, Switch } from 'react-router-dom'
 import Task from './Tasks/Task'
 import LiveClock from './LiveClock'
 import TaskForm from './TaskForm'
 import TaskCounter from './TaskCounter'
 import ProgressBar from './Tasks/ProgressBar'
+import UserAvatar from './UserAvatar'
 
 //MATERIAL UI
 import { makeStyles } from '@material-ui/core/styles';
@@ -31,11 +31,7 @@ import Avatar from '@material-ui/core/Avatar'
 import MainListItems from './listItems';
 import Backdrop from '@material-ui/core/Backdrop'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import Fab from '@material-ui/core/Fab'
-import AddIcon from '@material-ui/icons/Add';
-import Tooltip from '@material-ui/core/Tooltip';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import AccountDetail from './AccountDetail';
 
 
 const drawerWidth = 240;
@@ -201,6 +197,9 @@ const Dashboard = ({ auth: { isAuthenticated, loading, user }, task, loadUser, l
                         <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
                             Zealousy
                         </Typography>
+                        <Typography variant="h6" color="inherit" noWrap >
+                            Hi, {user.name.split(' ')[0]}
+                        </Typography>
                         <IconButton color="inherit">
                             <Badge badgeContent={4} color="secondary">
                                 <NotificationsIcon />
@@ -227,16 +226,7 @@ const Dashboard = ({ auth: { isAuthenticated, loading, user }, task, loadUser, l
                     {
                         !hide && (
                             <React.Fragment>
-                                <div className={classes.profile}>
-                                    <Avatar src={`http://localhost:5000/api/users/${user._id}/avatar`} className={classes.avatar}>
-                                    </Avatar>
-                                    <Typography variant="h6">
-                                        {user.name}
-                                    </Typography>
-                                    <Typography variant="subtitle1">
-                                        {user.email}
-                                    </Typography>
-                                </div>
+                                <UserAvatar user={user} />
                                 <Divider />
                             </React.Fragment>
                         )
@@ -247,11 +237,6 @@ const Dashboard = ({ auth: { isAuthenticated, loading, user }, task, loadUser, l
                     </List>
                 </Drawer>
                 <main className={classes.content}>
-                    {/* <Tooltip title="Create a task" placement="left">
-                        <Fab size="large" className={classes.addIcon}>
-                            <AddIcon style={{ color: "white" }} />
-                        </Fab>
-                    </Tooltip> */}
                     <div className={classes.appBarSpacer} />
                     <Container maxWidth="lg" className={classes.container}>
                         <Grid container spacing={3}>
@@ -276,7 +261,7 @@ const Dashboard = ({ auth: { isAuthenticated, loading, user }, task, loadUser, l
 
                         </Grid>
                         <Grid container spacing={3} alignItems="stretch">
-                            {/* Recent Orders */}
+                            {/* Task */}
                             <Grid item xs={8} style={{ height: "424px", overflow: "auto" }}>
                                 <Paper className={classes.paper} style={{ height: "100%" }}>
                                     <Task />

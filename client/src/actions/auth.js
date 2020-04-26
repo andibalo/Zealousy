@@ -1,4 +1,4 @@
-import { AUTH_ERROR, REGISTER, LOGIN, LOAD_USER, LOG_OUT, DELETE_ACCOUNT } from "./Types";
+import { AUTH_ERROR, REGISTER, LOGIN, LOAD_USER, LOG_OUT, DELETE_ACCOUNT, UPLOAD_IMAGE } from "./Types";
 import axios from 'axios'
 
 
@@ -47,8 +47,6 @@ export const register = (formData) => async dispatch => {
 
 
     } catch (error) {
-
-
 
         console.log(error)
 
@@ -104,6 +102,37 @@ export const logout = () => async dispatch => {
         })
     }
 
+}
+
+
+
+export const uploadImage = (file) => async dispatch => {
+
+    const config = {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    }
+
+    const formData = new FormData()
+
+    formData.append('avatar', file);
+
+    try {
+
+        const res = await axios.post('api/users/me/avatar', formData, config)
+
+        dispatch({
+            type: UPLOAD_IMAGE,
+            payload: res.data
+        })
+
+        dispatch(loadUser())
+
+    } catch (error) {
+
+        console.log(error)
+    }
 }
 
 export const deleteAccount = () => async dispatch => {

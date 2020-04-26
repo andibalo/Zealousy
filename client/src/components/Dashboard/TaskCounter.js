@@ -29,7 +29,7 @@ const TaskCounter = ({ task: { tasks } }) => {
 
     tasks.map(task => {
         task.completed ? ++completeTasks : ++incompleteTasks;
-        ++totalTasks;
+        return ++totalTasks;
     })
 
 

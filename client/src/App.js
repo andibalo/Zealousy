@@ -1,9 +1,9 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import Dashboard from './components/Dashboard/Dashboard'
 import LoginLanding from './components/Layout/LoginLanding'
 import RegisterLanding from './components/Layout/RegisterLanding'
 import PrivateRoute from './components/PrivateRoute/PrivateRoute'
-import { loadUser } from './actions/alert'
+
 //REDUX
 import { Provider } from 'react-redux'
 import store from './store'

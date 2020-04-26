@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { addTask, loadTasks } from '../../actions/task'
+import { addTask } from '../../actions/task'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import TaskFilter from './TaskFilter'
 //MATERIAL UI
 import TextField from '@material-ui/core/TextField'
