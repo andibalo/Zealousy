@@ -5,6 +5,7 @@ TODOS:
 - UI/Design improvements
 - Ability to switch between multiple views in dashboard
 - Confirmation link on account creation
+- Alert System that sends user email notifications regarding unfinished tasks
 - Responsiveness on all devices
 
 Known Bugs:
