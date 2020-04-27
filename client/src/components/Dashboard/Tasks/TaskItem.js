@@ -16,7 +16,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import Box from '@material-ui/core/Box'
 import Tooltip from '@material-ui/core/Tooltip'
 import TextField from '@material-ui/core/TextField';
-import AddIcon from '@material-ui/icons/Add';
+
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -152,7 +152,7 @@ const TaskItem = ({ task, deleteTask, editTask }) => {
                                 <form onSubmit={e => onSubmit(e)} className={classes.editForm}>
                                     <TextField defaultValue={editValue} onChange={e => onChange(e)} />
                                     <IconButton type="submit">
-                                        <AddIcon style={{ color: "rgba(251, 192, 45, 01)" }} />
+                                        <EditIcon style={{ color: "rgba(251, 192, 45, 01)" }} />
                                     </IconButton>
                                 </form>
                             )

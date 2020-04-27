@@ -92,9 +92,6 @@ const Login = ({ login, setAlert, token }) => {
     }
 
 
-    if (token) {
-        return <Redirect to="/dashboard" />
-    }
 
     return (
         <Container component="main" maxWidth="xs">

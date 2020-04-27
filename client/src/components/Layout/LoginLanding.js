@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-
 import { Link } from 'react-router-dom'
 import { Grid, Typography, makeStyles, Button, Box, Container } from '@material-ui/core'
 import Login from '../auth/Login'
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -36,7 +36,10 @@ const useStyles = makeStyles((theme) => ({
             zIndex: -1
         }
     },
-
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+    },
 
 }))
 
@@ -44,10 +47,15 @@ const useStyles = makeStyles((theme) => ({
 const LoginLanding = ({ isAuthenticated }) => {
     const classes = useStyles()
 
-    if (isAuthenticated) {
+    //CHECK is changed to localstorage.getItem('token') because flashes of component is rendered
+    //WHEN USING STATE AS CHECK, it requires time to fetch data hence the check is skipped and component is rendered
+    //until the data comes back from server. SO WE USE LOCAL STORAGE BCS IT IS ALwAYS THERE
+
+    if (localStorage.getItem('token')) {
         return <Redirect to="/dashboard" />
     }
 
+    console.log('login', isAuthenticated)
     return (
         <Box className={classes.wrapper}>
             <Container maxWidth="lg" >

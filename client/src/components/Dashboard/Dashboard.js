@@ -162,14 +162,18 @@ const Dashboard = ({ auth: { isAuthenticated, loading, user }, task, loadUser, l
     //even if name and email is still undefined. thats why we must have a LAODING state to keep track
     //otherwise it will result in name/email undefined and prevents redux actions from being dispatched
 
+    //WHY WE DONT WANT TO LOADUSER ONLY ON DAHSBOARD
+    //because we need to know if user is authenticated in our whole application like in landing pages.
+    //if only in dashboard.js then user is only loaded in dashboard
+
     useEffect(() => {
         loadUser()
         loadTasks()
-    }, [loadUser, loadTasks])
+    }, [loadTasks])
 
 
 
-    return !loading && user ? (
+    return !loading && user !== null ? (
         <div className={classes.root}>
             <CssBaseline />
             <AppBar position="absolute" style={{ backgroundColor: '#ff971d' }} className={clsx(classes.appBar, open && classes.appBarShift)}>

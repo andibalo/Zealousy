@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link, Redirect } from 'react-router-dom'
-import { Grid, Typography, makeStyles, Button, Box, Container } from '@material-ui/core'
+import { Link, Redirect, withRouter } from 'react-router-dom'
+import { Grid, Typography, makeStyles, Button, Box, Container, } from '@material-ui/core'
 import Register from '../auth/Register'
 
 
@@ -40,11 +40,14 @@ const useStyles = makeStyles((theme) => ({
 
 }))
 
-const RegisterLanding = ({ isAuthenticated }) => {
+const RegisterLanding = ({ auth: { isAuthenticated, loading } }) => {
 
     const classes = useStyles()
 
-    if (isAuthenticated) {
+    console.log('regsiter/home', isAuthenticated)
+
+
+    if (localStorage.getItem('token')) {
         return <Redirect to="/dashboard" />
     }
 
@@ -84,6 +87,6 @@ const RegisterLanding = ({ isAuthenticated }) => {
 
 
 const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated
+    auth: state.auth
 })
-export default connect(mapStateToProps)(RegisterLanding) 
+export default connect(mapStateToProps)(RegisterLanding)
